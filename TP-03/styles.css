@@ -1,126 +1,248 @@
 
-    /* Reset básico */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+#main {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  background-color: #282c34;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: Arial, sans-serif;
+  color: white;
+}
 
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #f4f6f8;
-      color: #333;
-      padding: 2rem;
-    }
+#main h1 {
+  font-size: 3rem;
+  margin-bottom: 40px;
+  text-align: center;
+}
 
-    h1 {
-      text-align: center;
-      margin-bottom: 2rem;
-      font-size: 2.5rem;
-      color: #2c3e50;
-    }
+#main .nav {
+  list-style: none;
+}
 
-    .nav {
-      display: flex;
-      justify-content: center;
-      gap: 1.5rem;
-      list-style: none;
-      padding: 1rem;
-      background-color: #ffffff;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-      max-width: 600px;
-      margin: 0 auto;
-    }
+#main .nav-link {
+  color: white;
+  font-size: 1.5rem;
+  text-decoration: none;
+  border: none;
+  background-color: transparent;
+}
 
-    .nav-link {
-      text-decoration: none;
-      color: #34495e;
-      font-weight: 500;
-      padding: 0.5rem 1rem;
-      border-radius: 4px;
-      transition: background-color 0.3s, color 0.3s;
-    }
+#main .nav-link:hover {
+  transform: scale(1.1);
+  transition: 0.2s ease-in-out;
+}
 
-    .nav-link:hover {
-      background-color: #3498db;
-      color: white;
-    }
+#TotalPoblation {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  background-color: #282c34;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start; /* para que el título y tabla no estén tan centrados verticalmente */
+  font-family: Arial, sans-serif;
+  color: white;
+  padding-top: 40px;
+}
 
-    @media (max-width: 600px) {
-      .nav {
-        flex-direction: column;
-        align-items: center;
-      }
-    }
+#TotalPoblation h1 {
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+  text-align: center;
+}
 
-    /*CSS del Total poblation*/
-    #TotalPoblation {
-        font-family: 'Segoe UI', sans-serif;
-        background: #f4f6f8;
-        padding: 2rem;
-        color: #333;
-      }
-  
-      h1 {
-        text-align: center;
-        margin-bottom: 2rem;
-      }
-  
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        background-color: #fff;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      }
-  
-      thead {
-        background-color: #3498db;
-        color: white;
-      }
-  
-      th, td {
-        padding: 1rem;
-        border: 1px solid #ddd;
-        text-align: left;
-      }
-  
-      tbody tr:hover {
-        background-color: #f1f1f1;
-      }
+#TotalPoblation table {
+  border-collapse: collapse;
+  width: 80%;
+  max-width: 900px;
+  background-color: #3a3f4b;
+  color: white;
+  border: 1px solid #555;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
 
-      /*CSS del Stats*/
+#TotalPoblation th,
+#TotalPoblation td {
+  border: 1px solid #555;
+  padding: 12px 16px;
+  text-align: center;
+}
 
-      #Stats {
-        font-family: 'Arial', sans-serif;
-        background-color: #f4f7fa;
-        margin: 0;
-        padding: 20px;
-      }
-      h1 {
-        text-align: center;
-        color: #333;
-      }
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      }
-      th, td {
-        padding: 12px;
-        text-align: center;
-        border: 1px solid #ddd;
-      }
-      th {
-        background-color: #3498db;
-        color: white;
-      }
-      tr:nth-child(even) {
-        background-color: #f2f2f2;
-      }
-      .container {
-        max-width: 800px;
-        margin: 0 auto;
-      }
+#TotalPoblation th {
+  background-color: #444b57;
+  font-weight: bold;
+}
 
+#TotalPoblation tr:nth-child(even) {
+  background-color: #2f343d;
+}
+
+#TotalPoblation tr:hover {
+  background-color: #505865;
+  transform: scale(1.01);
+  transition: transform 0.2s ease-in-out;
+}
+
+#menu-toggle {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  cursor: pointer;
+  z-index: 1001;
+}
+
+#menu-toggle span {
+  display: block;
+  width: 30px;
+  height: 4px;
+  background-color: white;
+  margin: 6px 0;
+  transition: 0.3s;
+}
+
+#side-menu {
+  position: fixed;
+  top: 0;
+  left: -250px;
+  width: 220px;
+  height: 100vh;
+  background-color: #1f2229;
+  padding-top: 60px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+  transition: left 0.3s ease-in-out;
+  z-index: 1000;
+}
+
+#side-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#side-menu ul li {
+  padding: 15px 20px;
+}
+
+#side-menu ul li a {
+  color: white;
+  text-decoration: none;
+  font-size: 1.2rem;
+}
+
+#side-menu ul li a:hover {
+  color: #1e90ff;
+}
+
+#side-menu.open {
+  left: 0;
+}
+
+body#FrequencyTable {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  background-color: #282c34;
+  font-family: Arial, sans-serif;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 40px;
+}
+
+body#FrequencyTable h1 {
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+body#FrequencyTable h3 {
+  margin-top: 30px;
+  margin-bottom: 15px;
+  font-size: 1.5rem;
+  color: #1e90ff;
+  text-align: center;
+}
+
+body#FrequencyTable table {
+  width: 80%;
+  max-width: 700px;
+  border-collapse: collapse;
+  background-color: #1f2229;
+  color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 30px;
+}
+
+body#FrequencyTable th,
+body#FrequencyTable td {
+  padding: 15px;
+  text-align: center;
+  border-bottom: 1px solid #444;
+}
+
+body#FrequencyTable th {
+  background-color: #444b57;
+  color: white;
+  text-transform: uppercase;
+}
+
+body#FrequencyTable tr:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+body#Stats {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  background-color: #282c34;
+  font-family: Arial, sans-serif;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 40px;
+}
+
+body#Stats h1 {
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+body#Stats table {
+  width: 100%;
+  max-width: 700px;
+  border-collapse: collapse;
+  background-color: #1f2229;
+  color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 30px;
+}
+
+body#Stats th,
+body#Stats td {
+  padding: 15px;
+  text-align: center;
+  border-bottom: 1px solid #444;
+}
+
+body#Stats th {
+  background-color: #444b57;
+  color: white;
+  text-transform: uppercase;
+}
+
+body#Stats tr:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}

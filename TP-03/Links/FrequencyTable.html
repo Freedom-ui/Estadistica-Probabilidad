@@ -1,29 +1,62 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../styles.css">
-    <script src="../script.js" defer></script>
+    <script src="../frequency.js" defer></script>
     <title>Document</title>
 </head>
-<body>
-    <h1>Listado de Estudiantes por frecuencia</h1>
-    <table border="1">
+
+<body id="FrequencyTable">
+
+    <div id="menu-toggle">
+        <span></span>
+        <span></span>
+    </div>
+
+    <nav id="side-menu">
+        <ul>
+            <li><a href="Main.html">Main Menu</a></li>
+            <li><a href="TotalPoblation.html">Total Poblation</a></li>
+            <li><a href="Stats.html">Stats</a></li>
+            <li><a href="FrequencyTable.html">Frequency</a></li>
+        </ul>
+    </nav>
+
+    <h1>Tablas de Frecuencia</h1>
+
+    <h3>Frecuencia por Nivel Educativo</h3>
+    <table>
         <thead>
             <tr>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Frecuencia</th>
+                <th>Nivel</th>
+                <th>F</th>
+                <th>FA</th>
+                <th>FR</th>
             </tr>
         </thead>
-        <tbody id="tabla-frecuencia">
-        </tbody>
+        <tbody id="frecuencia-nivel"></tbody>
+    </table>
+
+    <h3>Frecuencia por Curso</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Curso</th>
+                <th>F</th>
+                <th>FA</th>
+                <th>FR</th>
+            </tr>
+        </thead>
+        <tbody id="frecuencia-curso"></tbody>
     </table>
 
     <script>
-       
+
     </script>
 </body>
+
 </html>
