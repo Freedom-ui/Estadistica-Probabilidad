@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard Estadístico</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <canvas id="myPieChart" style= "width: 500px; height: 500px;"></canvas>
+
+  <script>
+    const url = 'https://apidemo.geoeducacion.com.ar/api/testing/estudiantes/1';
+
+    function loadObjects() {
+      return new Promise(function (resolve, reject) {
+        var request = new XMLHttpRequest();
+        request.open('GET', url);
+        request.responseType = 'json';
+        request.onload = function () {
+          if (request.status == 200) {
+            resolve(request.response);
+          } else {
+            reject(Error(request.statusText));
+          }
+        };
+        request.onerror = function () {
+          reject(Error('Error: unexpected network error.'));
+        };
+        request.send();
+      });
+    }
+
+    loadObjects().then(response => {
+      const alumnos = response.data;
+      const conteoPorNivel = {};
+
+      alumnos.forEach(alumno => {
+        const nivel = alumno.nivel;
+        conteoPorNivel[nivel] = (conteoPorNivel[nivel] || 0) + 1;
+      });
+
+      const labels = Object.keys(conteoPorNivel);
+      const valores = Object.values(conteoPorNivel);
+
+      const data = {
+        labels: labels,
+        datasets: [{
+          label: 'Alumnos por Nivel',
+          data: valores,
+          backgroundColor: [
+            'rgb(255, 99, 132)',
+            'rgb(54, 162, 235)',
+            'rgb(255, 205, 86)',
+            'rgb(70, 190, 192)'
+          ],
+          hoverOffset: 4
+        }]
+      };
+
+      const config = {
+        type: 'pie',
+        data: data,
+        options: {
+          maintainAspectRatio: false,
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'top',
+                labels: {
+                    sort:(a, b)=> {
+                        const orden = ['inicial','Primario','Secundario']
+                        return orden.indexOf(a.text) - orden.indexOf(b.text);
+                    }
+                }
+            },
+            title: {
+              display: true,
+              text: 'Distribución de Alumnos por Nivel'
+            }
+          }
+          
+        }
+      };
+      new Chart(document.getElementById('myPieChart'), config);
+    }).catch(function (error) {
+      console.error('Error al cargar los datos:', error);
+    });
+  </script>
+</body>
+</html>

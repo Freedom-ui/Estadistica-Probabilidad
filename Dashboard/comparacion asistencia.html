@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Asistencia por Curso</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div style="width: 800px; height: 400px;">
+    <canvas id="barChart"></canvas>
+  </div>
+
+  <script>
+    const url = 'https://apidemo.geoeducacion.com.ar/api/testing/asistencia/1';
+
+    function loadObjects() {
+      return new Promise(function (resolve, reject) {
+        var request = new XMLHttpRequest();
+        request.open('GET', url);
+        request.responseType = 'json';
+        request.onload = function () {
+          if (request.status == 200) {
+            resolve(request.response);
+          } else {
+            reject(Error(request.statusText));
+          }
+        };
+        request.onerror = function () {
+          reject(Error('Error: unexpected network error.'));
+        };
+        request.send();
+      });
+    }
+
+    loadObjects().then(response => {
+      const asistencias = response.data;
+
+      
+      const labels = asistencias.map(curso => curso.curso);
+
+      
+      const presentes = asistencias.map(curso => curso.presentes);
+      const ausentes = asistencias.map(curso => curso.ausentes);
+
+      const data = {
+        labels: labels,
+        datasets: [
+          {
+            label: 'Presentes',
+            data: presentes,
+            backgroundColor: 'rgb(54, 162, 235)'
+          },
+          {
+            label: 'Ausentes',
+            data: ausentes,
+            backgroundColor: 'rgb(255, 99, 132)'
+          }
+        ]
+      };
+
+      const config = {
+        type: 'bar',
+        data: data,
+        options: {
+          responsive: true,
+          plugins: {
+            title: {
+              display: true,
+              text: 'Comparación de Asistencia por Curso'
+            },
+            legend: {
+              position: 'top'
+            }
+          },
+          scales: {
+            x: {
+              stacked: true
+            },
+            y: {
+              stacked: true,
+              beginAtZero: true
+            }
+          }
+        }
+      };
+
+      new Chart(document.getElementById('barChart'), config);
+    }).catch(function (error) {
+      console.error('Error al cargar los datos:', error);
+    });
+  </script>
+</body>
+</html>

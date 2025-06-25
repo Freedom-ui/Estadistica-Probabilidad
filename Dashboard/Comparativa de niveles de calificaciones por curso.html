@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Comparativa de Calificaciones por Curso</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div style="width: 800px; height: 500px;">
+    <canvas id="barChart"></canvas>
+  </div>
+
+  <script>
+    const url = 'https://apidemo.geoeducacion.com.ar/api/testing/calificaciones/1';
+
+    function loadObjects() {
+      return new Promise(function (resolve, reject) {
+        var request = new XMLHttpRequest();
+        request.open('GET', url);
+        request.responseType = 'json';
+        request.onload = function () {
+          if (request.status == 200) {
+            resolve(request.response);
+          } else {
+            reject(Error(request.statusText));
+          }
+        };
+        request.onerror = function () {
+          reject(Error('Error: unexpected network error.'));
+        };
+        request.send();
+      });
+    }
+
+    loadObjects().then(response => {
+      const cursos = response.data;
+
+      const labels = cursos.map(c => c.curso);
+      const aprobados = cursos.map(c => c.aprobados * 100);
+      const desaprobados = cursos.map(c => c.desaprobados * 100);
+
+      const data = {
+        labels: labels,
+        datasets: [
+          {
+            label: 'Aprobados (%)',
+            data: aprobados,
+            backgroundColor: 'rgb(75, 192, 192)'
+          },
+          {
+            label: 'Desaprobados (%)',
+            data: desaprobados,
+            backgroundColor: 'rgb(255, 99, 132)'
+          }
+        ]
+      };
+
+      const config = {
+        type: 'bar',
+        data: data,
+        options: {
+          responsive: true,
+          plugins: {
+            title: {
+              display: true,
+              text: 'Comparativa de Calificaciones por Curso'
+            },
+            tooltip: {
+              callbacks: {
+                label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y.toFixed(1)}%`
+              }
+            },
+            legend: {
+              position: 'bottom'
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: 100,
+              ticks: {
+                callback: value => value + '%'
+              }
+            }
+          }
+        }
+      };
+
+      new Chart(document.getElementById('barChart'), config);
+    }).catch(error => {
+      console.error('Error al cargar los datos:', error);
+    });
+  </script>
+</body>
+</html>

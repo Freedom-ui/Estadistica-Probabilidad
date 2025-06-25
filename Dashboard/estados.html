@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Situación de Envío de Comunicados</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div style="width: 400px; height: 400px;">
+    <canvas id="comunicadosChart"></canvas>
+  </div>
+
+  <script>
+    const url = 'https://apidemo.geoeducacion.com.ar/api/testing/comunicados/1';
+
+    function loadObjects() {
+      return new Promise(function (resolve, reject) {
+        var request = new XMLHttpRequest();
+        request.open('GET', url);
+        request.responseType = 'json';
+        request.onload = function () {
+          if (request.status == 200) {
+            resolve(request.response);
+          } else {
+            reject(Error(request.statusText));
+          }
+        };
+        request.onerror = function () {
+          reject(Error('Error: unexpected network error.'));
+        };
+        request.send();
+      });
+    }
+
+    loadObjects().then(response => {
+      const comunicados = response.data[0]; 
+
+      const data = {
+        labels: ['Entregados', 'Pendientes', 'Error'],
+        datasets: [{
+          label: 'Comunicados',
+          data: [comunicados.entregados, comunicados.pendientes, comunicados.error],
+          backgroundColor: [
+            'rgb(75, 192, 192)',    
+            'rgb(255, 205, 86)',    
+            'rgb(255, 99, 132)'     
+          ],
+          hoverOffset: 4
+        }]
+      };
+
+      const config = {
+        type: 'doughnut',
+        data: data,
+        options: {
+          plugins: {
+            title: {
+              display: true,
+              text: 'Situación de Envío de Comunicados'
+            },
+            legend: {
+              position: 'bottom'
+            }
+          }
+        }
+      };
+
+      new Chart(document.getElementById('comunicadosChart'), config);
+    }).catch(error => {
+      console.error('Error al cargar los datos:', error);
+    });
+  </script>
+</body>
+</html>

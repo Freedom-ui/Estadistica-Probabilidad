@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Calificaciones Generales</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div style="width: 400px; height: 400px;">
+    <canvas id="calificacionesChart"></canvas>
+  </div>
+
+  <script>
+    const url = 'https://apidemo.geoeducacion.com.ar/api/testing/calificaciones/1';
+
+    function loadObjects() {
+      return new Promise(function (resolve, reject) {
+        var request = new XMLHttpRequest();
+        request.open('GET', url);
+        request.responseType = 'json';
+        request.onload = function () {
+          if (request.status == 200) {
+            resolve(request.response);
+          } else {
+            reject(Error(request.statusText));
+          }
+        };
+        request.onerror = function () {
+          reject(Error('Error: unexpected network error.'));
+        };
+        request.send();
+      });
+    }
+
+    loadObjects().then(response => {
+      const cursos = response.data;
+
+      let totalAprobados = 0;
+      let totalDesaprobados = 0;
+
+      cursos.forEach(curso => {
+        totalAprobados += curso.aprobados;
+        totalDesaprobados += curso.desaprobados;
+      });
+
+      const totalCursos = cursos.length;
+
+      const promedioAprobados = totalAprobados / totalCursos;
+      const promedioDesaprobados = totalDesaprobados / totalCursos;
+
+      const data = {
+        labels: ['Aprobados', 'Desaprobados'],
+        datasets: [{
+          label: 'Calificaciones',
+          data: [promedioAprobados * 100, promedioDesaprobados * 100],
+          backgroundColor: ['rgb(75, 192, 192)', 'rgb(255, 99, 132)'],
+          hoverOffset: 6
+        }]
+      };
+
+      const config = {
+        type: 'doughnut',
+        data: data,
+        options: {
+          plugins: {
+            title: {
+              display: true,
+              text: 'Nivel General de Calificaciones (Promedio %)'
+            },
+            legend: {
+              position: 'bottom'
+            },
+            tooltip: {
+              callbacks: {
+                label: context => `${context.label}: ${context.parsed.toFixed(1)}%`
+              }
+            }
+          }
+        }
+      };
+
+      new Chart(document.getElementById('calificacionesChart'), config);
+    }).catch(error => {
+      console.error('Error al cargar datos:', error);
+    });
+  </script>
+</body>
+</html>

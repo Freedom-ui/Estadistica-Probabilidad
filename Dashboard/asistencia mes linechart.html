@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Evolución de Asistencia</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div style="width: 700px; height: 400px;">
+    <canvas id="lineChart"></canvas>
+  </div>
+
+  <script>
+    const url = 'https://apidemo.geoeducacion.com.ar/api/testing/historial_asistencia/1';
+
+    function loadObjects() {
+      return new Promise((resolve, reject) => {
+        const request = new XMLHttpRequest();
+        request.open('GET', url);
+        request.responseType = 'json';
+        request.onload = function () {
+          if (request.status == 200) {
+            resolve(request.response);
+          } else {
+            reject(Error(request.statusText));
+          }
+        };
+        request.onerror = () => reject(Error('Error de red inesperado.'));
+        request.send();
+      });
+    }
+
+    loadObjects().then(response => {
+      const datos = response.data;
+      const labels = datos.map(item => item.mes);
+      const valores = datos.map(item => item.asistencia * 100); 
+
+      const data = {
+        labels: labels,
+        datasets: [{
+          label: 'Asistencia (%)',
+          data: valores,
+          borderColor: 'rgb(54, 162, 235)',
+          backgroundColor: 'rgba(54, 162, 235, 0.2)',      
+          fill: true,
+        }]
+      };
+
+      const config = {
+        type: 'line',
+        data: data,
+        options: {
+          responsive: true,
+          plugins: {
+            title: {
+              display: true,
+              text: 'Evolución Anual de la Asistencia por Mes'
+            },
+            tooltip: {
+              callbacks: {
+                label: ctx => `${ctx.parsed.y.toFixed(1)}%`
+              }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: 100,
+              ticks: {
+                callback: value => value + '%'
+              }
+            }
+          }
+        }
+      };
+
+      new Chart(document.getElementById('lineChart'), config);
+    }).catch(error => {
+      console.error('Error al cargar los datos:', error);
+    });
+  </script>
+</body>
+</html>
+
